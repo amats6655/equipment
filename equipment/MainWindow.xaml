@@ -13,133 +13,132 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignLightBackground}"
         FontFamily="{DynamicResource MaterialDesignFont}" Width="1241" Height="613" MinWidth="1000" MinHeight="600" Loaded="Window_Loaded">
-    <Window.Resources>
+	<Window.Resources>
 
-    </Window.Resources>
+	</Window.Resources>
 
-    <TabControl TabStripPlacement="Left">
-        <!--TAB ITEM Вкладка с сотрудниками -->
-        <TabItem Header="Сотрудники" IsSelected="True" Loaded="CMO_users">
-            <Grid Background="#FFE5E5E5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="70*"/>
-                    <ColumnDefinition Width="30*"/>
-                </Grid.ColumnDefinitions>
-                <Grid Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="10*"/>
-                        <RowDefinition Height="40*"/>
-                        <RowDefinition Height="20*"/>
-                    </Grid.RowDefinitions>
-                    <Label Grid.Column="1" Content="Новый сотрудник" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,40,0,0"/>
-                    <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="252">
-                        <Label Content="Имя" Margin="0,0,0,10"/>
-                        <TextBox x:Name="tb_users_name" TextWrapping="Wrap" Width="245" Margin="0,0,0,20"/>
-                        <Label Content="Телефон" Margin="0,0,0,10"/>
-                        <TextBox x:Name="tb_users_phone" TextWrapping="Wrap" Width="244" Margin="0,0,0,20"/>
-                        <Button x:Name="btn_users_add" Content="Добавить" Click="btn_users_add_Click"/>
-                    </StackPanel>
-                </Grid>
+	<TabControl TabStripPlacement="Left">
+		<!--TAB ITEM Вкладка с сотрудниками -->
+		<TabItem Header="Сотрудники" IsSelected="True" Loaded="CMO_users">
+			<Grid Background="#FFE5E5E5">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="70*"/>
+					<ColumnDefinition Width="30*"/>
+				</Grid.ColumnDefinitions>
+				<Grid Grid.Column="1">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="10*"/>
+						<RowDefinition Height="40*"/>
+						<RowDefinition Height="20*"/>
+					</Grid.RowDefinitions>
+					<Label Grid.Column="1" Content="Новый сотрудник" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,40,0,0"/>
+					<StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="252">
+						<Label Content="Имя" Margin="0,0,0,10"/>
+						<TextBox x:Name="tb_users_name" TextWrapping="Wrap" Width="245" Margin="0,0,0,20"/>
+						<Label Content="Телефон" Margin="0,0,0,10"/>
+						<TextBox x:Name="tb_users_phone" TextWrapping="Wrap" Width="244" Margin="0,0,0,20"/>
+						<Button x:Name="btn_users_add" Content="Добавить" Click="btn_users_add_Click"/>
+					</StackPanel>
+				</Grid>
 
-                <DataGrid CanUserAddRows="False" AutoGenerateColumns="False" x:Name="UsersGrid">
-                    <DataGrid.Columns>
-                        <materialDesign:DataGridTextColumn Binding="{Binding name}" Header="ФИО"/>
-                        <materialDesign:DataGridTextColumn Binding="{Binding phone}" Header="Телефон"/>
-                        <DataGridCheckBoxColumn Binding="{Binding debt}" Header="Долг"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
-        </TabItem>
-        <!--TAB ITEM Вкладка с оборудованием-->
-        <TabItem Header="Оборудование" Loaded="CMO_equipments">
-            <Grid Background="#FFE5E5E5">
-                <Grid Background="#FFE5E5E5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="70*"/>
-                        <ColumnDefinition Width="30*"/>
-                    </Grid.ColumnDefinitions>
-                    <DataGrid x:Name="EquipmentsGrid" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
-                        <DataGrid.Columns>
-                            <materialDesign:DataGridTextColumn Binding="{Binding type}" Header="Тип"/>
-                            <materialDesign:DataGridTextColumn Binding="{Binding model}" Header="Модель"/>
-                            <materialDesign:DataGridTextColumn Binding="{Binding rem}" Header="Остаток"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                    <Grid Grid.Column="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="10*"/>
-                            <RowDefinition Height="40*"/>
-                            <RowDefinition Height="20*"/>
-                        </Grid.RowDefinitions>
-                        <Label Grid.Column="1" Content="Новое оборудование" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,40,0,0"/>
-                        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="252" Height="292">
-                            <Label Content="Тип" Margin="0,0,0,10" Width="240"/>
-                            <ComboBox x:Name="cb_equip_type" Width="240" Margin="0,0,0,20" DisplayMemberPath="type" SelectedValuePath="id"/>
-                            <Label Content="Модель" Margin="0,0,0,10" Width="240"/>
-                            <TextBox x:Name="tb_equip_model" TextWrapping="Wrap" Width="240" Margin="0,0,0,20"/>
-                            <Label Content="Количество" Margin="0,0,0,10" Width="240"/>
-                            <TextBox x:Name="tb_equip_amount" TextWrapping="Wrap" Width="240" Margin="0,0,0,25"/>
-                            <Button x:Name="btn_equip_add" Content="Добавить" Click="btn_equip_add_Click" Cursor="Hand"/>
-                        </StackPanel>
-                    </Grid>
-                </Grid>
-            </Grid>
-        </TabItem>
-        <!--TAB ITEM Вкладка с заказами-->
-        <TabItem Header="Выдано" Loaded="CMO_orders">
-            <Grid Background="#FFE5E5E5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="70*"/>
-                    <ColumnDefinition Width="30*"/>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="1" Content="Выдача оборудования" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,40,0,0"/>
-                <DataGrid x:Name="OrdersGrid" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
-                    <DataGrid.Columns>
-                        <materialDesign:DataGridTextColumn Binding="{Binding id}" Header="ID"/>
-                        <materialDesign:DataGridTextColumn Binding="{Binding type}" Header="Тип"/>
-                        <materialDesign:DataGridTextColumn Binding="{Binding model}" Header="Модель"/>
-                        <materialDesign:DataGridTextColumn Binding="{Binding amount}" Header="Количество"/>
-                        <materialDesign:DataGridTextColumn Binding="{Binding date_issue}" Header="Дата выдачи"/>
-                        <materialDesign:DataGridTextColumn Binding="{Binding name}" Header="ФИО"/>
-                        <materialDesign:DataGridTextColumn Binding="{Binding phone}" Header="Телефон"/>
-                        <materialDesign:DataGridTextColumn Binding="{Binding date_return}" Header="Дата возврата"/>
-                        <DataGridCheckBoxColumn Binding="{Binding returned}" Header="Возвращено"/>
-                        <materialDesign:DataGridTextColumn Binding="{Binding rem}" Header="Остаток"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-                <Grid Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Label Grid.Column="1" Content="Модель оборудования" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Bottom" Width="214"/>
-                    <ComboBox x:Name="cb_orders_eqiup" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="4" Width="214" DisplayMemberPath="model" SelectedValuePath="id"/>
-                    <Label Grid.Column="1" Content="Количество" HorizontalAlignment="Center" Grid.Row="5" VerticalAlignment="Bottom" Width="214"/>
-                    <TextBox x:Name="tb_orders_amount" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Center" Width="214"/>
-                    <Label Grid.Column="1" Content="Дата выдачи" HorizontalAlignment="Center" Grid.Row="7" VerticalAlignment="Bottom" Width="214"/>
-                    <DatePicker x:Name="dp_orders_issue" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="8" Width="214"/>
-                    <Label Grid.Column="1" Content="Сотрудник" HorizontalAlignment="Center" Grid.Row="9" VerticalAlignment="Bottom" Width="214"/>
-                    <ComboBox x:Name="cb_orders_user" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="10" Width="214" DisplayMemberPath="name" ItemsSource="{Binding}" SelectedValuePath="id"/>
-                    <Label Grid.Column="1" Content="Дата возврата" HorizontalAlignment="Center" Grid.Row="11" VerticalAlignment="Bottom" Width="214"/>
-                    <DatePicker x:Name="dp_orders_return" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="12" Width="214"/>
-                    <Button x:Name="Btn_orders_add" Content="Добавить" HorizontalAlignment="Center" Grid.Row="14" VerticalAlignment="Center" Width="178" Click="Btn_orders_add_Click" Cursor="Hand"/>
-                </Grid>
-            </Grid>
-        </TabItem>
-    </TabControl>
+				<DataGrid CanUserAddRows="False" AutoGenerateColumns="False" x:Name="UsersGrid">
+					<DataGrid.Columns>
+						<materialDesign:DataGridTextColumn Binding="{Binding name}" Header="ФИО" IsReadOnly="True"/>
+						<materialDesign:DataGridTextColumn Binding="{Binding phone}" Header="Телефон" IsReadOnly="True"/>
+						<DataGridCheckBoxColumn Binding="{Binding debt}" Header="Долг" IsReadOnly="True"/>
+					</DataGrid.Columns>
+				</DataGrid>
+			</Grid>
+		</TabItem>
+		<!--TAB ITEM Вкладка с оборудованием-->
+		<TabItem Header="Оборудование" Loaded="CMO_equipments">
+			<Grid Background="#FFE5E5E5">
+				<Grid Background="#FFE5E5E5">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="70*"/>
+						<ColumnDefinition Width="30*"/>
+					</Grid.ColumnDefinitions>
+					<DataGrid x:Name="EquipmentsGrid" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
+						<DataGrid.Columns>
+							<materialDesign:DataGridTextColumn Binding="{Binding type}" Header="Тип" IsReadOnly="True"/>
+							<materialDesign:DataGridTextColumn Binding="{Binding model}" Header="Модель" IsReadOnly="True"/>
+							<materialDesign:DataGridTextColumn Binding="{Binding rem}" Header="Остаток" IsReadOnly="True"/>
+						</DataGrid.Columns>
+					</DataGrid>
+					<Grid Grid.Column="1">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="10*"/>
+							<RowDefinition Height="40*"/>
+							<RowDefinition Height="20*"/>
+						</Grid.RowDefinitions>
+						<Label Grid.Column="1" Content="Новое оборудование" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,40,0,0"/>
+						<StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="252" Height="292">
+							<Label Content="Тип" Margin="0,0,0,10" Width="240"/>
+							<ComboBox x:Name="cb_equip_type" Width="240" Margin="0,0,0,20" DisplayMemberPath="type" SelectedValuePath="id"/>
+							<Label Content="Модель" Margin="0,0,0,10" Width="240"/>
+							<TextBox x:Name="tb_equip_model" TextWrapping="Wrap" Width="240" Margin="0,0,0,20"/>
+							<Label Content="Количество" Margin="0,0,0,10" Width="240"/>
+							<TextBox x:Name="tb_equip_amount" TextWrapping="Wrap" Width="240" Margin="0,0,0,25"/>
+							<Button x:Name="btn_equip_add" Content="Добавить" Click="btn_equip_add_Click" Cursor="Hand"/>
+						</StackPanel>
+					</Grid>
+				</Grid>
+			</Grid>
+		</TabItem>
+		<!--TAB ITEM Вкладка с заказами-->
+		<TabItem Header="Выдано" Loaded="CMO_orders">
+			<Grid Background="#FFE5E5E5">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="70*"/>
+					<ColumnDefinition Width="30*"/>
+				</Grid.ColumnDefinitions>
+				<Label Grid.Column="1" Content="Выдача оборудования" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,40,0,0"/>
+				<DataGrid x:Name="OrdersGrid" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" RowEditEnding="OrdersGrid_RowEditEnding">
+					<DataGrid.Columns>
+						<materialDesign:DataGridTextColumn Binding="{Binding id}" Header="ID" IsReadOnly="True"/>
+						<materialDesign:DataGridTextColumn Binding="{Binding type}" Header="Тип" IsReadOnly="True"/>
+						<materialDesign:DataGridTextColumn Binding="{Binding model}" Header="Модель" IsReadOnly="True"/>
+						<materialDesign:DataGridTextColumn Binding="{Binding amount}" Header="Количество" IsReadOnly="True"/>
+						<materialDesign:DataGridTextColumn Binding="{Binding date_issue}" Header="Дата выдачи" IsReadOnly="True"/>
+						<materialDesign:DataGridTextColumn Binding="{Binding name}" Header="ФИО" IsReadOnly="True"/>
+						<materialDesign:DataGridTextColumn Binding="{Binding phone}" Header="Телефон" IsReadOnly="True"/>
+						<materialDesign:DataGridTextColumn Binding="{Binding date_return}" Header="Дата возврата"/>
+						<DataGridCheckBoxColumn Binding="{Binding returned}" Header="Возвращено" IsReadOnly="False"/>
+					</DataGrid.Columns>
+				</DataGrid>
+				<Grid Grid.Column="1">
+					<Grid.RowDefinitions>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+						<RowDefinition/>
+					</Grid.RowDefinitions>
+					<Label Grid.Column="1" Content="Модель оборудования" HorizontalAlignment="Center" Grid.Row="3" VerticalAlignment="Bottom" Width="214"/>
+					<ComboBox x:Name="cb_orders_eqiup" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="4" Width="214" DisplayMemberPath="model" SelectedValuePath="id"/>
+					<Label Grid.Column="1" Content="Количество" HorizontalAlignment="Center" Grid.Row="5" VerticalAlignment="Bottom" Width="214"/>
+					<TextBox x:Name="tb_orders_amount" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Center" Width="214"/>
+					<Label Grid.Column="1" Content="Дата выдачи" HorizontalAlignment="Center" Grid.Row="7" VerticalAlignment="Bottom" Width="214"/>
+					<DatePicker x:Name="dp_orders_issue" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="8" Width="214"/>
+					<Label Grid.Column="1" Content="Сотрудник" HorizontalAlignment="Center" Grid.Row="9" VerticalAlignment="Bottom" Width="214"/>
+					<ComboBox x:Name="cb_orders_user" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="10" Width="214" DisplayMemberPath="name" ItemsSource="{Binding}" SelectedValuePath="id"/>
+					<Label Grid.Column="1" Content="Дата возврата" HorizontalAlignment="Center" Grid.Row="11" VerticalAlignment="Bottom" Width="214"/>
+					<DatePicker x:Name="dp_orders_return" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="12" Width="214"/>
+					<Button x:Name="Btn_orders_add" Content="Добавить" HorizontalAlignment="Center" Grid.Row="14" VerticalAlignment="Center" Width="178" Click="Btn_orders_add_Click" Cursor="Hand"/>
+				</Grid>
+			</Grid>
+		</TabItem>
+	</TabControl>
 </Window>

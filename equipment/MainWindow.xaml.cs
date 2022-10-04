@@ -17,28 +17,31 @@ namespace equipment
         string connectionString;
         SqlDataAdapter adapter;
         DataTable usersTable;
-        DataTable equipmentsTable;
-        DataTable ordersTable;
+        DataTable equipmentTable;
+        DataTable orderTable;
 
 
         public MainWindow()
         {
             InitializeComponent();
             connectionString = ConfigurationManager.ConnectionStrings["equipmentDbConnect"].ConnectionString;
+            OrdersGrid.RowEditEnding += OrdersGrid_RowEditEnding;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            
+/// Добавить возможность добавления order из equipment grid
+///
+///
         }
-        /// <summary>
+
         /// Загрузка данных в TabItem
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// 
+
+        //Загрузка данных в users
         private void CMO_users(object sender, RoutedEventArgs e)
         {
-            string sql = "SELECT * FROM users";
+            string sql = "SELECT * FROM [users]";
             usersTable = new DataTable();
             SqlConnection connection = null;
             try
@@ -61,11 +64,11 @@ namespace equipment
                     connection.Close();
             }
         }
-
+        //Загрузка данных в equipment
         private void CMO_equipments(object sender, RoutedEventArgs e)
         {
-            string sql = "SELECT * FROM dbo.equipment";
-            equipmentsTable = new DataTable();
+            string sql = "SELECT * FROM [equipment]";
+            equipmentTable = new DataTable();
             SqlConnection connection = null;
             try
             {
@@ -74,8 +77,8 @@ namespace equipment
                 adapter = new SqlDataAdapter(command);
 
                 connection.Open();
-                adapter.Fill(equipmentsTable);
-                EquipmentsGrid.ItemsSource = equipmentsTable.DefaultView;
+                adapter.Fill(equipmentTable);
+                EquipmentsGrid.ItemsSource = equipmentTable.DefaultView;
             }
             catch (Exception ex)
             {
@@ -87,11 +90,11 @@ namespace equipment
                     connection.Close();
             }
         }
-
+        //загрузка данных в orders
         private void CMO_orders(object sender, RoutedEventArgs e)
         {
-            string sql = "SELECT * FROM dbo.order";
-            ordersTable = new DataTable();
+            string sql = "SELECT * FROM [orders]";
+            orderTable = new DataTable();
             SqlConnection connection = null;
             try
             {
@@ -100,8 +103,8 @@ namespace equipment
                 adapter = new SqlDataAdapter(command);
 
                 connection.Open();
-                adapter.Fill(ordersTable);
-                OrdersGrid.ItemsSource = ordersTable.DefaultView;
+                adapter.Fill(orderTable);
+                OrdersGrid.ItemsSource = orderTable.DefaultView;
             }
             catch (Exception ex)
             {
@@ -149,12 +152,10 @@ namespace equipment
         //    tb_orders_amount.Clear();
         }
 
-
-
-
-        private void ReturnOrder_Click(object sender, RoutedEventArgs e)
+        private void OrdersGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
         {
-            
+            _ = new SqlCommandBuilder(adapter);
+            adapter.Update(orderTable);
         }
     }
 }
