@@ -37,7 +37,7 @@
 						<TextBox x:Name="tb_users_name" TextWrapping="Wrap" Width="245" Margin="0,0,0,20"/>
 						<Label Content="Телефон" Margin="0,0,0,10"/>
 						<TextBox x:Name="tb_users_phone" TextWrapping="Wrap" Width="244" Margin="0,0,0,20"/>
-						<Button x:Name="btn_users_add" Content="Добавить" Click="btn_users_add_Click"/>
+						<Button x:Name="btn_users_add" Content="Добавить" Click="Btn_users_add_Click"/>
 					</StackPanel>
 				</Grid>
 
@@ -58,7 +58,7 @@
 						<ColumnDefinition Width="70*"/>
 						<ColumnDefinition Width="30*"/>
 					</Grid.ColumnDefinitions>
-					<DataGrid x:Name="EquipmentsGrid" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
+					<DataGrid x:Name="EquipmentsGrid" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" MouseDoubleClick="MDC_equipment">
 						<DataGrid.Columns>
 							<materialDesign:DataGridTextColumn Binding="{Binding type}" Header="Тип" IsReadOnly="True"/>
 							<materialDesign:DataGridTextColumn Binding="{Binding model}" Header="Модель" IsReadOnly="True"/>
@@ -79,7 +79,7 @@
 							<TextBox x:Name="tb_equip_model" TextWrapping="Wrap" Width="240" Margin="0,0,0,20"/>
 							<Label Content="Количество" Margin="0,0,0,10" Width="240"/>
 							<TextBox x:Name="tb_equip_amount" TextWrapping="Wrap" Width="240" Margin="0,0,0,25"/>
-							<Button x:Name="btn_equip_add" Content="Добавить" Click="btn_equip_add_Click" Cursor="Hand"/>
+							<Button x:Name="btn_equip_add" Content="Добавить" Click="Btn_equip_add_Click" Cursor="Hand"/>
 						</StackPanel>
 					</Grid>
 				</Grid>

@@ -122,14 +122,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="equipment_rentDataSet.cs">
-      <DependentUpon>equipment_rentDataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="equipment_rentDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>equipment_rentDataSet.xsd</DependentUpon>
-    </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -153,17 +145,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="equipment_rentDataSet.xsc">
-      <DependentUpon>equipment_rentDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="equipment_rentDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <SubType>Designer</SubType>
-      <LastGenOutput>equipment_rentDataSet.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="equipment_rentDataSet.xss">
-      <DependentUpon>equipment_rentDataSet.xsd</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

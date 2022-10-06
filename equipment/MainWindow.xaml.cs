@@ -1,5 +1,4 @@
-﻿using equipment.equipment_rentDataSetTableAdapters;
-using System;
+﻿using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -117,18 +116,20 @@ namespace equipment
             }
         }
 
-        private void btn_users_add_Click(object sender, RoutedEventArgs e)
+        private void Btn_users_add_Click(object sender, RoutedEventArgs e)
         {
-            //usersTableAdapter equipment_rentDataSetusersTableAdapter = new usersTableAdapter();
-            //equipment_rentDataSetusersTableAdapter.Insert(tb_users_name.Text, tb_users_phone.Text, cb_users_admin.IsChecked);
-
-            //equipment_rentDataSet equipment_rentDataSet = (equipment_rentDataSet)FindResource("equipment_rentDataSet");
-            //equipment_rentDataSetusersTableAdapter.Fill(equipment_rentDataSet.users);
-            //tb_users_name.Clear();
-            //tb_users_phone.Clear();
+            string users_name = tb_users_name.Text;
+            string users_phone = tb_users_phone.Text;
+            string sql = $"INSERT INTO users (name, phone, debt) VALUES  ('{users_name}', '{users_phone}', 0)";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand(sql, connection);
+                command.ExecuteNonQuery();
+            }
         }
 
-        private void btn_equip_add_Click(object sender, RoutedEventArgs e)
+        private void Btn_equip_add_Click(object sender, RoutedEventArgs e)
         {
             //equipTableAdapter equipment_rentDataSetEquipTableAdapter = new equipTableAdapter();
             //equipment_rentDataSetEquipTableAdapter.Insert((int)cb_equip_type.SelectedValue, tb_equip_model.Text, int.Parse(tb_equip_amount.Text), int.Parse(tb_equip_amount.Text));
@@ -156,6 +157,16 @@ namespace equipment
         {
             _ = new SqlCommandBuilder(adapter);
             adapter.Update(orderTable);
+        }
+
+
+
+        private void MDC_equipment(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (EquipmentsGrid.SelectedItems.Count == 0) return;
+            String model = ((DataRowView)EquipmentsGrid.SelectedItems[0]).Row["model"].ToString();
+            int orderID = (int)((DataRowView)EquipmentsGrid.SelectedItems[0]).Row["id"];
+            MessageBox.Show("Сюда можно добавить новый заказ" + model + " " + orderID);
         }
     }
 }
