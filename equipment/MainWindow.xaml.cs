@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Dynamitey.DynamicObjects;
+using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -18,6 +20,7 @@ namespace equipment
         DataTable usersTable;
         DataTable equipmentTable;
         DataTable orderTable;
+        DataTable typesTable;
 
 
         public MainWindow()
@@ -29,9 +32,29 @@ namespace equipment
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-/// Добавить возможность добавления order из equipment grid
-///
-///
+            string sql = "SELECT * FROM [equip_types]";
+            typesTable = new DataTable();
+            SqlConnection connection = null;
+            try
+            {
+                connection = new SqlConnection(connectionString);
+                SqlCommand command = new SqlCommand(sql, connection);
+                adapter = new SqlDataAdapter(command);
+                connection.Open();
+                adapter.Fill(typesTable);
+                cb_equip_type.ItemsSource = typesTable.DefaultView;
+                cb_equip_type.DisplayMemberPath = typesTable.Columns["type"].ToString();
+                cb_equip_type.SelectedValuePath = typesTable.Columns["id"].ToString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                if (connection != null)
+                    connection.Close();
+            }
         }
 
         /// Загрузка данных в TabItem
@@ -134,7 +157,19 @@ namespace equipment
 
         private void Btn_equip_add_Click(object sender, RoutedEventArgs e)
         {
-            
+            int type = int.Parse(cb_equip_type.SelectedValue.ToString());
+            string model = tb_equip_model.Text;
+            int amount = int.Parse(tb_equip_amount.Text);
+            string sql = $"INSERT INTO equip (id_types, model, amt, rem) VALUES ('{type}', '{model}', '{amount}', '{amount}')";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand(sql, connection);
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+            tb_equip_model.Clear();
+            tb_equip_amount.Clear();
         }
 
         private void Btn_orders_add_Click(object sender, RoutedEventArgs e)
@@ -162,7 +197,7 @@ namespace equipment
             if (EquipmentsGrid.SelectedItems.Count == 0) return;
             String model = ((DataRowView)EquipmentsGrid.SelectedItems[0]).Row["model"].ToString();
             int orderID = (int)((DataRowView)EquipmentsGrid.SelectedItems[0]).Row["id"];
-            MessageBox.Show("Сюда можно добавить новый заказ" + model + " " + orderID);
+            MessageBox.Show("Сюда можно добавить новый заказ" + model + " " + orderID );
         }
     }
 }

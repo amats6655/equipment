@@ -74,8 +74,8 @@
 						<Label Grid.Column="1" Content="Новое оборудование" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,40,0,0"/>
 						<StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="252" Height="292">
 							<Label Content="Тип" Margin="0,0,0,10" Width="240"/>
-							<ComboBox x:Name="cb_equip_type" Width="240" Margin="0,0,0,20" DisplayMemberPath="type" SelectedValuePath="id"/>
-							<Label Content="Модель" Margin="0,0,0,10" Width="240"/>
+                            <ComboBox x:Name="cb_equip_type" Width="240" DisplayMemberPath="type" SelectedValuePath="id"/>
+                            <Label Content="Модель" Margin="0,0,0,10" Width="240"/>
 							<TextBox x:Name="tb_equip_model" TextWrapping="Wrap" Width="240" Margin="0,0,0,20"/>
 							<Label Content="Количество" Margin="0,0,0,10" Width="240"/>
 							<TextBox x:Name="tb_equip_amount" TextWrapping="Wrap" Width="240" Margin="0,0,0,25"/>
