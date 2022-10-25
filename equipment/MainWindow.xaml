@@ -82,7 +82,7 @@
 							<Button x:Name="btn_equip_add" Content="Добавить" Click="Btn_equip_add_Click" Cursor="Hand"/>
 						</StackPanel>
 					</Grid>
-				</Grid>
+                </Grid>
 			</Grid>
 		</TabItem>
 		<!--TAB ITEM Вкладка с заказами-->

@@ -126,19 +126,15 @@ namespace equipment
                 connection.Open();
                 SqlCommand command = new SqlCommand(sql, connection);
                 command.ExecuteNonQuery();
+                connection.Close();
             }
+            tb_users_name.Clear();
+            tb_users_phone.Clear();
         }
 
         private void Btn_equip_add_Click(object sender, RoutedEventArgs e)
         {
-            //equipTableAdapter equipment_rentDataSetEquipTableAdapter = new equipTableAdapter();
-            //equipment_rentDataSetEquipTableAdapter.Insert((int)cb_equip_type.SelectedValue, tb_equip_model.Text, int.Parse(tb_equip_amount.Text), int.Parse(tb_equip_amount.Text));
-
-            //equipment_rentDataSet equipment_rentDataSet = (equipment_rentDataSet)FindResource("equipment_rentDataSet");
-            //equipmentTableAdapter equipment_rentDataSetequipmentTableAdapter = new equipmentTableAdapter();
-            //equipment_rentDataSetequipmentTableAdapter.Fill(equipment_rentDataSet.equipment);
-            //tb_equip_model.Clear();
-            //tb_equip_amount.Clear();
+            
         }
 
         private void Btn_orders_add_Click(object sender, RoutedEventArgs e)
@@ -170,3 +166,4 @@ namespace equipment
         }
     }
 }
+ 
