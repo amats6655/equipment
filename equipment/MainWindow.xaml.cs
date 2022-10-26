@@ -22,7 +22,7 @@ namespace equipment
         DataTable orderTable;
         DataTable typesTable;
 
-
+        //TODO: Добавить возможность редактирования количества в наличии при выдаче оборудования
         public MainWindow()
         {
             InitializeComponent();
@@ -135,7 +135,7 @@ namespace equipment
         //загрузка данных в orders
         private void CMO_orders(object sender, RoutedEventArgs e)
         {
-            string sql = "SELECT * FROM [orders]";
+            string sql = "SELECT * FROM [order]";
             orderTable = new DataTable();
             SqlConnection connection = null;
             try
@@ -194,14 +194,21 @@ namespace equipment
 
         private void Btn_orders_add_Click(object sender, RoutedEventArgs e)
         {
-        //    ordersTableAdapter equipment_rentDataSetordersTableAdapter = new ordersTableAdapter();
-        //    equipment_rentDataSetordersTableAdapter.Insert((int)cb_orders_user.SelectedValue, (int)cb_orders_eqiup.SelectedValue, int.Parse(tb_orders_amount.Text),
-        //        DateTime.Parse(dp_orders_issue.Text), DateTime.Parse(dp_orders_return.Text), false);
-
-        //    equipment_rentDataSet equipment_rentDataSet = (equipment_rentDataSet)FindResource("equipment_rentDataSet");
-        //    orderTableAdapter equipment_rentDataSetorderTableAdapter = new orderTableAdapter();
-        //    equipment_rentDataSetorderTableAdapter.Fill(equipment_rentDataSet.order);
-        //    tb_orders_amount.Clear();
+            int model = int.Parse(cb_orders_eqiup.SelectedValue.ToString());
+            int amount = int.Parse(tb_orders_amount.Text);
+            DateTime date_issue = DateTime.Parse(dp_orders_issue.Text);
+            int user = int.Parse(cb_orders_user.SelectedValue.ToString());
+            DateTime date_return = DateTime.Parse(dp_orders_return.Text);
+            string sql = $"INSERT INTO orders (id_user, id_equip, amount, date_issue, date_return) " +
+                $"VALUES ('{user}', '{model}', '{amount}', '{date_issue}', '{date_return}')";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand(sql, connection);
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+            tb_equip_amount.Clear();
         }
 
         private void OrdersGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
