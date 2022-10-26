@@ -1,12 +1,9 @@
-﻿using Dynamitey.DynamicObjects;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace equipment
 {
@@ -27,7 +24,6 @@ namespace equipment
         {
             InitializeComponent();
             connectionString = ConfigurationManager.ConnectionStrings["equipmentDbConnect"].ConnectionString;
-            OrdersGrid.RowEditEnding += OrdersGrid_RowEditEnding;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -91,12 +87,12 @@ namespace equipment
                 connection = new SqlConnection(connectionString);
                 SqlCommand command = new SqlCommand(sql, connection);
                 adapter = new SqlDataAdapter(command);
-                
+
                 connection.Open();
                 adapter.Fill(usersTable);
                 UsersGrid.ItemsSource = usersTable.DefaultView;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -159,6 +155,11 @@ namespace equipment
             }
         }
 
+
+        /// Обработка кнопок
+        ///  
+
+
         private void Btn_users_add_Click(object sender, RoutedEventArgs e)
         {
             string users_name = tb_users_name.Text;
@@ -211,11 +212,6 @@ namespace equipment
             tb_equip_amount.Clear();
         }
 
-        private void OrdersGrid_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
-        {
-            _ = new SqlCommandBuilder(adapter);
-            adapter.Update(orderTable);
-        }
 
 
 
@@ -224,8 +220,17 @@ namespace equipment
             if (EquipmentsGrid.SelectedItems.Count == 0) return;
             String model = ((DataRowView)EquipmentsGrid.SelectedItems[0]).Row["model"].ToString();
             int orderID = (int)((DataRowView)EquipmentsGrid.SelectedItems[0]).Row["id"];
-            MessageBox.Show("Сюда можно добавить новый заказ" + model + " " + orderID );
+            int index = EquipmentsGrid.SelectedIndex;
+            //MessageBox.Show("Сюда можно добавить новый заказ" + model + " " + index );
+            OrderWindow orderWindow = new OrderWindow(index);
+            if (orderWindow.ShowDialog() == true)
+            {
+                
+            }
+            else
+            {
+                
+            }
         }
     }
 }
- 

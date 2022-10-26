@@ -93,7 +93,7 @@
 					<ColumnDefinition Width="30*"/>
 				</Grid.ColumnDefinitions>
 				<Label Grid.Column="1" Content="Выдача оборудования" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,40,0,0"/>
-				<DataGrid x:Name="OrdersGrid" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False" RowEditEnding="OrdersGrid_RowEditEnding">
+				<DataGrid x:Name="OrdersGrid" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
 					<DataGrid.Columns>
 						<materialDesign:DataGridTextColumn Binding="{Binding id}" Header="ID" IsReadOnly="True"/>
 						<materialDesign:DataGridTextColumn Binding="{Binding type}" Header="Тип" IsReadOnly="True"/>
@@ -131,11 +131,11 @@
 					<Label Grid.Column="1" Content="Количество" HorizontalAlignment="Center" Grid.Row="5" VerticalAlignment="Bottom" Width="214"/>
 					<TextBox x:Name="tb_orders_amount" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="6" TextWrapping="Wrap" VerticalAlignment="Center" Width="214"/>
 					<Label Grid.Column="1" Content="Дата выдачи" HorizontalAlignment="Center" Grid.Row="7" VerticalAlignment="Bottom" Width="214"/>
-					<DatePicker x:Name="dp_orders_issue" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="8" Width="214"/>
+					<DatePicker x:Name="dp_orders_issue" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="8" Width="214" FirstDayOfWeek="Monday"/>
 					<Label Grid.Column="1" Content="Сотрудник" HorizontalAlignment="Center" Grid.Row="9" VerticalAlignment="Bottom" Width="214"/>
 					<ComboBox x:Name="cb_orders_user" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="10" Width="214" DisplayMemberPath="name" ItemsSource="{Binding}" SelectedValuePath="id"/>
 					<Label Grid.Column="1" Content="Дата возврата" HorizontalAlignment="Center" Grid.Row="11" VerticalAlignment="Bottom" Width="214"/>
-					<DatePicker x:Name="dp_orders_return" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="12" Width="214"/>
+					<DatePicker x:Name="dp_orders_return" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="12" Width="214" FirstDayOfWeek="Monday"/>
 					<Button x:Name="Btn_orders_add" Content="Добавить" HorizontalAlignment="Center" Grid.Row="14" VerticalAlignment="Center" Width="178" Click="Btn_orders_add_Click" Cursor="Hand"/>
 				</Grid>
 			</Grid>
