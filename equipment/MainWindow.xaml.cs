@@ -32,16 +32,36 @@ namespace equipment
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            string sql = "SELECT * FROM [equip_types]";
+            string sql_types = "SELECT * FROM [equip_types]";
+            string sql_users = "SELECT [id], [name] FROM [users]";
+            string sql_models = "SELECT [id], [model] FROM [equip]";
             typesTable = new DataTable();
+            usersTable = new DataTable();
+            equipmentTable = new DataTable();
             SqlConnection connection = null;
             try
             {
                 connection = new SqlConnection(connectionString);
-                SqlCommand command = new SqlCommand(sql, connection);
-                adapter = new SqlDataAdapter(command);
                 connection.Open();
+                SqlCommand command_types = new SqlCommand(sql_types, connection);
+                adapter = new SqlDataAdapter(command_types);
                 adapter.Fill(typesTable);
+                SqlCommand command_users = new SqlCommand(sql_users, connection);
+                adapter = new SqlDataAdapter(command_users);
+                adapter.Fill(usersTable);
+                SqlCommand command_models = new SqlCommand(sql_models, connection);
+                adapter = new SqlDataAdapter(command_models);
+                adapter.Fill(equipmentTable);
+
+                cb_orders_user.ItemsSource = usersTable.DefaultView;
+                cb_orders_user.DisplayMemberPath = usersTable.Columns["name"].ToString();
+                cb_orders_user.SelectedValuePath = usersTable.Columns["id"].ToString();
+
+
+                cb_orders_eqiup.ItemsSource = equipmentTable.DefaultView;
+                cb_orders_eqiup.DisplayMemberPath = equipmentTable.Columns["model"].ToString();
+                cb_orders_eqiup.SelectedValuePath = equipmentTable.Columns["id"].ToString();
+
                 cb_equip_type.ItemsSource = typesTable.DefaultView;
                 cb_equip_type.DisplayMemberPath = typesTable.Columns["type"].ToString();
                 cb_equip_type.SelectedValuePath = typesTable.Columns["id"].ToString();
