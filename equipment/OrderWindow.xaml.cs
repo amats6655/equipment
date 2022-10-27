@@ -71,13 +71,20 @@ namespace equipment
             DateTime date_issue = DateTime.Parse(dp_date_issue.Text);
             int user = int.Parse(cb_user.SelectedValue.ToString());
             DateTime date_return = DateTime.Parse(dp_date_return.Text);
-            string sql = $"INSERT INTO orders (id_user, id_equip, amount, date_issue, date_return) " +
+            string sql_addOrder =
+                $"INSERT INTO orders (id_user, id_equip, amount, date_issue, date_return) " +
                 $"VALUES ('{user}', '{model}', '{amount}', '{date_issue}', '{date_return}')";
+            string sql_updateAmount =
+                $"UPDATE equip " +
+                $"SET rem = rem - {amount} " +
+                $"WHERE id = {model}";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand(sql, connection);
-                command.ExecuteNonQuery();
+                SqlCommand command_insert = new SqlCommand(sql_addOrder, connection);
+                command_insert.ExecuteNonQuery();
+                SqlCommand command_update = new SqlCommand(sql_updateAmount, connection);
+                command_update.ExecuteNonQuery();
                 connection.Close();
             }
             this.DialogResult = true;

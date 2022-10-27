@@ -7,9 +7,6 @@ using System.Windows.Controls;
 
 namespace equipment
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         string connectionString;
@@ -19,13 +16,15 @@ namespace equipment
         DataTable orderTable;
         DataTable typesTable;
 
-        //TODO: Добавить возможность редактирования количества в наличии при выдаче оборудования
+        //TODO: ГОТОВО Добавить возможность редактирования количества в наличии при выдаче оборудования 
+        //TODO: Создать маску на TextBox
         public MainWindow()
         {
             InitializeComponent();
             connectionString = ConfigurationManager.ConnectionStrings["equipmentDbConnect"].ConnectionString;
         }
 
+        //Заполнение ComboBox при загрузке формы
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             string sql_types = "SELECT * FROM [equip_types]";
@@ -72,9 +71,6 @@ namespace equipment
                     connection.Close();
             }
         }
-
-        /// Загрузка данных в TabItem
-        /// 
 
         //Загрузка данных в users
         private void CMO_users(object sender, RoutedEventArgs e)
@@ -156,10 +152,9 @@ namespace equipment
         }
 
 
-        /// Обработка кнопок
-        ///  
+        // Обработка кнопок
 
-
+        // Добавление нового пользователя
         private void Btn_users_add_Click(object sender, RoutedEventArgs e)
         {
             string users_name = tb_users_name.Text;
@@ -175,7 +170,7 @@ namespace equipment
             tb_users_name.Clear();
             tb_users_phone.Clear();
         }
-
+        // Добавление нового оборудования
         private void Btn_equip_add_Click(object sender, RoutedEventArgs e)
         {
             int type = int.Parse(cb_equip_type.SelectedValue.ToString());
@@ -192,7 +187,7 @@ namespace equipment
             tb_equip_model.Clear();
             tb_equip_amount.Clear();
         }
-
+        // Выдача оборудования
         private void Btn_orders_add_Click(object sender, RoutedEventArgs e)
         {
             int model = int.Parse(cb_orders_eqiup.SelectedValue.ToString());
@@ -200,37 +195,32 @@ namespace equipment
             DateTime date_issue = DateTime.Parse(dp_orders_issue.Text);
             int user = int.Parse(cb_orders_user.SelectedValue.ToString());
             DateTime date_return = DateTime.Parse(dp_orders_return.Text);
-            string sql = $"INSERT INTO orders (id_user, id_equip, amount, date_issue, date_return) " +
+            string sql_addOrder = 
+                $"INSERT INTO orders (id_user, id_equip, amount, date_issue, date_return) " +
                 $"VALUES ('{user}', '{model}', '{amount}', '{date_issue}', '{date_return}')";
+            string sql_updateAmount =
+                $"UPDATE equip " +
+                $"SET rem = rem - {amount} " +
+                $"WHERE id = {model}";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                SqlCommand command = new SqlCommand(sql, connection);
-                command.ExecuteNonQuery();
+                SqlCommand command_insert = new SqlCommand(sql_addOrder, connection);
+                command_insert.ExecuteNonQuery();
+                SqlCommand command_update = new SqlCommand(sql_updateAmount, connection);
+                command_update.ExecuteNonQuery();
                 connection.Close();
             }
             tb_equip_amount.Clear();
         }
 
-
-
-
+        // Выдача оборудования по двойному клику по модели таблице оборудования
         private void MDC_equipment(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (EquipmentsGrid.SelectedItems.Count == 0) return;
-            String model = ((DataRowView)EquipmentsGrid.SelectedItems[0]).Row["model"].ToString();
-            int orderID = (int)((DataRowView)EquipmentsGrid.SelectedItems[0]).Row["id"];
             int index = EquipmentsGrid.SelectedIndex;
-            //MessageBox.Show("Сюда можно добавить новый заказ" + model + " " + index );
             OrderWindow orderWindow = new OrderWindow(index);
-            if (orderWindow.ShowDialog() == true)
-            {
-                
-            }
-            else
-            {
-                
-            }
+            orderWindow.ShowDialog();
         }
     }
 }
