@@ -13,35 +13,38 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignLightBackground}"
         SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
-        FontFamily="{DynamicResource MaterialDesignFont}" Width="300" Height="620" MinWidth="300" MinHeight="600" Loaded="Window_Loaded" WindowStyle="ToolWindow" ResizeMode="NoResize">
+        FontFamily="{DynamicResource MaterialDesignFont}" Width="300" Height="700" MinWidth="300" MinHeight="700" Loaded="Window_Loaded" WindowStyle="ToolWindow" ResizeMode="NoResize">
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="58*"/>
-                <RowDefinition Height="473*"/>
-                <RowDefinition Height="53*"/>
+                <RowDefinition Height="68*"/>
+                <RowDefinition Height="479*"/>
+                <RowDefinition Height="137*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="10*"/>
                 <ColumnDefinition Width="80*"/>
                 <ColumnDefinition Width="10*"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="1" Margin="0,58,0,5" Grid.RowSpan="2">
-                <StackPanel Height="323">
-                    <Label Content="Модель оборудования"/>
-                    <ComboBox x:Name="cb_model" Margin="0,0,0,20"/>
-                    <Label Content="Количество"/>
-                    <TextBox x:Name="tb_amount" TextWrapping="Wrap" Margin="0,0,0,20" Text="1"/>
-                    <Label Content="Дата выдачи"/>
-                    <DatePicker x:Name="dp_date_issue" Margin="0,0,0,20" FirstDayOfWeek="Monday"/>
-                    <Label Content="Сотрудник"/>
-                    <ComboBox x:Name="cb_user" Margin="0,0,0,20"/>
-                    <Label Content="Дата возврата"/>
-                    <DatePicker x:Name="dp_date_return" Margin="0,0,0,10" FirstDayOfWeek="Monday"/>
-                </StackPanel>
+            <StackPanel Grid.Column="1" Margin="0,58,0,62" Grid.RowSpan="2">
+                <Label Content="Модель оборудования" Margin="0,30,0,0"/>
+                <ComboBox x:Name="cb_model" Margin="0,0,0,15"/>
+                <Label Content="Количество"/>
+                <TextBox x:Name="tb_amount" TextWrapping="Wrap" Text="1" Margin="0,0,0,15"/>
+                <Label Content="Дата выдачи"/>
+                <DatePicker x:Name="dp_date_issue" FirstDayOfWeek="Monday" Margin="0,0,0,15"/>
+                <CheckBox x:Name="cb_newUser" Content="Новый сотрудник?" Margin="0,0,0,15" Click="new_user"/>
+                <Label x:Name="lbl_user" Content="Сотрудник" Width="240"/>
+                <ComboBox x:Name="cb_user" Margin="0,0,0,15"/>
+                <Label x:Name="lbl_name" Content="Фамилия Имя" Visibility="Collapsed"/>
+                <TextBox x:Name="tb_name" TextWrapping="Wrap" Width="239" Margin="0,0,0,15" Visibility="Collapsed"/>
+                <Label x:Name="lbl_phone" Content="Телефон" Visibility="Collapsed"/>
+                <TextBox x:Name="tb_phone" TextWrapping="Wrap" Width="239" Margin="0,0,0,15" Visibility="Collapsed"/>
+                <Label Content="Дата возврата"/>
+                <DatePicker x:Name="dp_date_return" FirstDayOfWeek="Monday"/>
             </StackPanel>
-            <Button Content="Добавить" Margin="0,380,0,0" Grid.Row="1" Cursor="Hand" Grid.Column="1" VerticalAlignment="Top" Click="Button_Click" />
-            <Button IsCancel="True" Content="Отменить" Margin="0,431,0,10" Grid.Row="1" Grid.Column="1" Background="#FF817E86" BorderBrush="#FF828282" Cursor="Hand"/>
+            <Button Content="Добавить" Grid.Row="2" Cursor="Hand" Grid.Column="1" Click="Button_Click" VerticalAlignment="Top" />
+            <Button IsCancel="True" Content="Отменить" Grid.Row="2" Grid.Column="1" Background="#FF817E86" BorderBrush="#FF828282" Cursor="Hand" VerticalAlignment="Top" Margin="0,45,0,0"/>
             <Label Grid.Column="1" Content="Выдача оборудования" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="16" Height="28"/>
         </Grid>
 

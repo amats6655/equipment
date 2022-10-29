@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Dynamitey.DynamicObjects;
+using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -11,12 +13,13 @@ namespace equipment
     /// </summary>
     public partial class OrderWindow : Window
     {
-        string connectionString;
+        readonly string connectionString;
         SqlDataAdapter adapter;
         DataTable usersTable;
         DataTable equipmentTable;
+        DataTable lastUserTable;
         int localIndex;
-        //TODO: Добавить возможность указывать нового пользователя, если нет в списке
+        //TODO: ГОТОВО Добавить возможность указывать нового пользователя, если нет в списке
 
         public OrderWindow(int index)
         {
@@ -69,25 +72,83 @@ namespace equipment
             int model = int.Parse(cb_model.SelectedValue.ToString());
             int amount = int.Parse(tb_amount.Text);
             DateTime date_issue = DateTime.Parse(dp_date_issue.Text);
-            int user = int.Parse(cb_user.SelectedValue.ToString());
             DateTime date_return = DateTime.Parse(dp_date_return.Text);
-            string sql_addOrder =
-                $"INSERT INTO orders (id_user, id_equip, amount, date_issue, date_return) " +
-                $"VALUES ('{user}', '{model}', '{amount}', '{date_issue}', '{date_return}')";
+
+            string name = tb_name.Text;
+            string phone = tb_phone.Text;
+
             string sql_updateAmount =
                 $"UPDATE equip " +
                 $"SET rem = rem - {amount} " +
                 $"WHERE id = {model}";
+
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                connection.Open();
-                SqlCommand command_insert = new SqlCommand(sql_addOrder, connection);
-                command_insert.ExecuteNonQuery();
-                SqlCommand command_update = new SqlCommand(sql_updateAmount, connection);
-                command_update.ExecuteNonQuery();
-                connection.Close();
+                if (cb_newUser.IsChecked == false)
+                {
+                    int user = int.Parse(cb_user.SelectedValue.ToString());
+                    string sql_addOrder =
+                        $"INSERT INTO orders (id_user, id_equip, amount, date_issue, date_return) " +
+                        $"VALUES ('{user}', '{model}', '{amount}', '{date_issue}', '{date_return}')";
+                    connection.Open();
+                    SqlCommand command_insertOrder = new SqlCommand(sql_addOrder, connection);
+                    command_insertOrder.ExecuteNonQuery();
+                    SqlCommand command_update = new SqlCommand(sql_updateAmount, connection);
+                    command_update.ExecuteNonQuery();
+
+                    connection.Close();
+                }
+                else if (cb_newUser.IsChecked == true)
+                {
+                    // Добавляем нового пользователя
+                    string sql_addUser = $"INSERT users VALUES ('{name}', '{phone}', 1)";
+                    lastUserTable = new DataTable();
+                    connection.Open();
+                    SqlCommand command_insertUser = new SqlCommand(sql_addUser, connection);
+                    command_insertUser.ExecuteNonQuery();
+
+                    // Выбираем последнего добавленного пользователя
+                    SqlCommand get_userID = new SqlCommand("SELECT TOP 1 * FROM [users] ORDER BY id DESC", connection);
+                    adapter = new SqlDataAdapter(get_userID);
+                    adapter.Fill(lastUserTable);
+                    int user = int.Parse(lastUserTable.Rows[0][0].ToString());
+
+                    // Привязываем к нему выдачу оборудования
+                    string sql_addOrder =
+                        $"INSERT INTO orders (id_user, id_equip, amount, date_issue, date_return) " +
+                        $"VALUES ('{user}', '{model}', '{amount}', '{date_issue}', '{date_return}')";
+                    SqlCommand command_insertOrder = new SqlCommand(sql_addOrder, connection);
+                    command_insertOrder.ExecuteNonQuery();
+
+                    // Изменяем остаток оборудования
+                    SqlCommand command_update = new SqlCommand(sql_updateAmount, connection);
+                    command_update.ExecuteNonQuery();
+                    connection.Close();
+                }
             }
             this.DialogResult = true;
+        }
+
+        private void new_user(object sender, RoutedEventArgs e)
+        {
+            if (cb_newUser.IsChecked == true)
+            {
+                lbl_phone.Visibility = Visibility.Visible;
+                lbl_name.Visibility = Visibility.Visible;
+                tb_name.Visibility = Visibility.Visible;
+                tb_phone.Visibility = Visibility.Visible;
+                lbl_user.Visibility = Visibility.Collapsed;
+                cb_user.Visibility = Visibility.Collapsed;
+            }
+            else if(cb_newUser.IsChecked == false)
+            {
+                lbl_phone.Visibility = Visibility.Collapsed;
+                lbl_name.Visibility = Visibility.Collapsed;
+                tb_name.Visibility = Visibility.Collapsed;
+                tb_phone.Visibility = Visibility.Collapsed;
+                lbl_user.Visibility = Visibility.Visible;
+                cb_user.Visibility = Visibility.Visible;
+            }
         }
     }
 }
