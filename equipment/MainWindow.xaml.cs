@@ -15,6 +15,7 @@ namespace equipment
         DataTable equipmentTable;
         DataTable orderTable;
         DataTable typesTable;
+        DataTable lastUserTable;
 
         //TODO: ГОТОВО Добавить возможность редактирования количества в наличии при выдаче оборудования 
         //TODO: Создать маску на TextBox
@@ -193,25 +194,73 @@ namespace equipment
             int model = int.Parse(cb_orders_eqiup.SelectedValue.ToString());
             int amount = int.Parse(tb_orders_amount.Text);
             DateTime date_issue = DateTime.Parse(dp_orders_issue.Text);
-            int user = int.Parse(cb_orders_user.SelectedValue.ToString());
             DateTime date_return = DateTime.Parse(dp_orders_return.Text);
-            string sql_addOrder = 
-                $"INSERT INTO orders (id_user, id_equip, amount, date_issue, date_return) " +
-                $"VALUES ('{user}', '{model}', '{amount}', '{date_issue}', '{date_return}')";
+
+            string name = tb_order_name.Text;
+            string phone = tb_order_phone.Text;
+
             string sql_updateAmount =
                 $"UPDATE equip " +
                 $"SET rem = rem - {amount} " +
                 $"WHERE id = {model}";
+
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                connection.Open();
-                SqlCommand command_insert = new SqlCommand(sql_addOrder, connection);
-                command_insert.ExecuteNonQuery();
-                SqlCommand command_update = new SqlCommand(sql_updateAmount, connection);
-                command_update.ExecuteNonQuery();
-                connection.Close();
+                if (cb_new_user.IsChecked == false)
+                {
+                    connection.Open();
+
+                    // Добавляем информацию в order
+                    int user = int.Parse(cb_orders_user.SelectedValue.ToString());
+                    string sql_addOrder =
+                        $"INSERT INTO orders (id_user, id_equip, amount, date_issue, date_return) " +
+                        $"VALUES ('{user}', '{model}', '{amount}', '{date_issue}', '{date_return}')";
+                    SqlCommand command_insertOrder = new SqlCommand(sql_addOrder, connection);
+                    command_insertOrder.ExecuteNonQuery();
+
+                    // Изменяем остаток оборудования
+                    SqlCommand command_update = new SqlCommand(sql_updateAmount, connection);
+                    command_update.ExecuteNonQuery();
+
+                    connection.Close();
+                }
+                else if (cb_new_user.IsChecked == true)
+                {
+                    connection.Open();
+
+                    // Добавляем нового пользователя
+                    string sql_addUser = $"INSERT users VALUES ('{name}', '{phone}', 1)";
+                    lastUserTable = new DataTable();
+                    SqlCommand command_insertUser = new SqlCommand(sql_addUser, connection);
+                    command_insertUser.ExecuteNonQuery();
+
+                    // Выбираем последнего добавленного пользователя
+                    SqlCommand get_userID = new SqlCommand("SELECT TOP 1 * FROM [users] ORDER BY id DESC", connection);
+                    adapter = new SqlDataAdapter(get_userID);
+                    adapter.Fill(lastUserTable);
+                    int user = int.Parse(lastUserTable.Rows[0][0].ToString());
+
+                    // Привязываем к нему выдачу оборудования
+                    string sql_addOrder =
+                        $"INSERT INTO orders (id_user, id_equip, amount, date_issue, date_return) " +
+                        $"VALUES ('{user}', '{model}', '{amount}', '{date_issue}', '{date_return}')";
+                    SqlCommand command_insertOrder = new SqlCommand(sql_addOrder, connection);
+                    command_insertOrder.ExecuteNonQuery();
+
+                    // Изменяем остаток оборудования
+                    SqlCommand command_update = new SqlCommand(sql_updateAmount, connection);
+                    command_update.ExecuteNonQuery();
+                    connection.Close();
+                }
+                cb_orders_eqiup.SelectedIndex = -1;
+                tb_orders_amount.Clear();
+                dp_orders_issue.ClearValue(UidProperty);
+                cb_orders_user.SelectedIndex = -1;
+                dp_orders_return.ClearValue(UidProperty);
+                tb_order_name.Clear();
+                tb_order_phone.Clear();
+
             }
-            tb_equip_amount.Clear();
         }
 
         // Выдача оборудования по двойному клику по модели таблице оборудования
@@ -221,6 +270,28 @@ namespace equipment
             int index = EquipmentsGrid.SelectedIndex;
             OrderWindow orderWindow = new OrderWindow(index);
             orderWindow.ShowDialog();
+        }
+
+        private void new_user(object sender, RoutedEventArgs e)
+        {
+            if (cb_new_user.IsChecked == true)
+            {
+                lbl_order_phone.Visibility = Visibility.Visible;
+                lbl_order_name.Visibility = Visibility.Visible;
+                tb_order_name.Visibility = Visibility.Visible;
+                tb_order_phone.Visibility = Visibility.Visible;
+                lbl_order_user.Visibility = Visibility.Collapsed;
+                cb_orders_user.Visibility = Visibility.Collapsed;
+            }
+            else if (cb_new_user.IsChecked == false)
+            {
+                lbl_order_phone.Visibility = Visibility.Collapsed;
+                lbl_order_name.Visibility = Visibility.Collapsed;
+                tb_order_name.Visibility = Visibility.Collapsed;
+                tb_order_phone.Visibility = Visibility.Collapsed;
+                lbl_order_user.Visibility = Visibility.Visible;
+                cb_orders_user.Visibility = Visibility.Visible;
+            }
         }
     }
 }
